@@ -2,8 +2,75 @@
 <html>
 <head>
 	<title>login | sign up</title>
+	<link rel="stylesheet" href="../static/css/styles.css">
 </head>
 <body>
+
+	<div class="card card--centered">
+		<div class="login">
+			<h1 class="login__title">Join us</h1>
+			<div class="login-no-provider">
+				<div class="tab-list clearfix">
+					<ul class="nav-tabs">
+						<li><a class="active" href="#tab-signin">sign in</a></li>
+						<li><a href="#tab-signup" data >sign up</a></li>
+					</ul>
+				</div>
+				<div class="tabs-content">
+					<div class="tab-signin" id="tab-signin">
+						<form action="">
+							<div class="form-row">
+								<div class="form-control clearfix">
+									<label for="email">Email </label>
+									<input type="email" name="email" id="email">
+								</div>
+								<span class=" msg-error"></span>
+							</div>
+							<div class="form-row">
+								<div class="form-control clearfix">
+									<label for="password">Password </label>
+									<input type="password" name="password" id="password">
+								</div>
+								<span class=" msg-error"></span>
+							</div>
+							<input type="submit" value="login">
+						</form>
+					</div>
+					<div class="tab-signup" id="tab-signup"  style="display: none;">
+						<form action="">
+							<div class="form-row">
+								<div class="form-control clearfix">
+									<label for="name">Name </label>
+									<input type="text" name="name" id="name">
+								</div>
+								<span class=" msg-error"></span>
+							</div>
+							<div class="form-row">
+								<div class="form-control clearfix">
+									<label for="email">Email </label>
+									<input type="email" name="email" id="email">
+								</div>
+								<span class=" msg-error"></span>
+							</div>
+							<div class="form-row">
+								<div class="form-control clearfix">
+									<label for="password">Password </label>
+									<input type="password" name="password" id="password">
+								</div>
+								<span class=" msg-error"></span>
+							</div>
+							<input type="submit" value="Sign Up">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="login-with-provid">
+				
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src="../static/js/app.js""></script>
 
 </body>
 </html>

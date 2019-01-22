@@ -1,0 +1,22 @@
+.login{
+	
+	&__title
+	{ 
+		text-transform: uppercase;
+		color:#F1F1F1;
+		width:100%;
+		text-align:center;
+		border-bottom: 5px solid $colorSecond;
+		padding:1rem;
+		box-sizing: border-box;
+		margin-bottom: 0;
+
+	}
+
+}
+
+.login-no-provider{
+	background: rgba(88, 182, 148, 0.5);
+	padding-bottom: 10px;
+
+}
