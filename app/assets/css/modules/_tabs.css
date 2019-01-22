@@ -17,7 +17,7 @@
 	ul li a{
 		display: block;
 		padding: .7rem 0;
-		background: $colorThird;
+		background: $colorSecond;
 		width: 100%;
 		text-align: center;
 		text-decoration: none;
@@ -27,7 +27,7 @@
 		transition: all .5s ease;
 
 		&:hover,&.active{
-			background:$colorSecond;
+			background:$colorThird;
 		}
 	}
 }

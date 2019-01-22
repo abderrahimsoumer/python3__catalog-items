@@ -62,7 +62,7 @@ body{
 .tab-list ul li a{
 	display: block;
 	padding: .7rem 0;
-	background: hsla(174,100%,29%,0.5);
+	background: #009688;
 	width: 100%;
 	text-align: center;
 	text-decoration: none;
@@ -74,7 +74,7 @@ body{
 
 
 .tab-list ul li a:hover,.tab-list ul li a.active{
-	background:#009688;
+	background:hsla(174,100%,29%,0.5);
 }
 
 

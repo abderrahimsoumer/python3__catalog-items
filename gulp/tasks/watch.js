@@ -19,10 +19,19 @@ gulp.task('watch', function() {
     gulp.start('cssInject');
   });
 
+  watch('./app/assets/js/**/*.js', function() {
+    gulp.start('jsInject');
+  });
+
 });
 
 gulp.task('cssInject', ['styles'], function() {
   return gulp.src('./app/src/static/css/styles.css')
+    .pipe(browserSync.stream());
+});
+
+gulp.task('jsInject', ['js'], function() {
+  return gulp.src('./app/src/static/js/app.jjs')
     .pipe(browserSync.stream());
 });
 
