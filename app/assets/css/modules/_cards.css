@@ -1,6 +1,6 @@
 .card{
-	width:400px;
-	height: 400px;
+	min-width:400px;
+	min-height: 400px;
 	background: #222;
 	padding:1rem;
 	padding-top:0;

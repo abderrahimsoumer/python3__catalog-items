@@ -1,0 +1,13 @@
+.btn{
+	text-decoration: none;
+	box-sizing: border-box;
+    padding: 0.6em;
+    background: #55b6a7;
+    border-width: 0;
+    margin: 0 10px;
+    color: #FFF;
+    /*font-size: 1.2em;*/
+    text-transform: uppercase;
+    font-weight: 400;
+    cursor: pointer;
+}

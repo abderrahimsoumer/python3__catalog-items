@@ -1,4 +1,8 @@
+
+
 body{
+	margin: 0;
+	padding: 0;
 	min-height: 100vh;
 	background:$mainColor no-repeat 100% 100%;
 	font-family: 'Open Sans', Helvetica, sans-serif;
@@ -9,4 +13,8 @@ body{
 	content: "";
 	width: 100%;
 	clear: both;
+}
+
+.float-left{
+	float: left;
 }
