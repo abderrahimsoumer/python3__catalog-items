@@ -21,8 +21,8 @@
 						<form action="">
 							<div class="form-row">
 								<div class="form-control clearfix">
-									<label for="email">Email </label>
-									<input type="email" name="email" id="email">
+									<label for="username">Username </label>
+									<input type="text" name="username" id="username">
 								</div>
 								<span class=" msg-error"></span>
 							</div>
@@ -37,7 +37,7 @@
 						</form>
 					</div>
 					<div class="tab-signup" id="tab-signup"  style="display: none;">
-						<form action="">
+						<form action="{{url_for('newUser')}}" method="POST">
 							<div class="form-row">
 								<div class="form-control clearfix">
 									<label for="name_signup">Name </label>
@@ -47,8 +47,8 @@
 							</div>
 							<div class="form-row">
 								<div class="form-control clearfix">
-									<label for="email_signup">Email </label>
-									<input type="email" name="email" id="email_signup">
+									<label for="username_signup">Username </label>
+									<input type="text" name="username" id="username_signup">
 								</div>
 								<span class=" msg-error"></span>
 							</div>
