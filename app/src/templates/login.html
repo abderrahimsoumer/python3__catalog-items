@@ -8,6 +8,17 @@
 
 	<div class="card card--centered">
 		<div class="login">
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 			<h1 class="login__title">Join us</h1>
 			<div class="tabs login-no-provider">
 				<div class="tab-list clearfix">
@@ -18,7 +29,7 @@
 				</div>
 				<div class="tabs-content">
 					<div class="tab-signin" id="tab-signin">
-						<form action="">
+						<form action="" method="post">
 							<div class="form-row">
 								<div class="form-control clearfix">
 									<label for="username">Username </label>

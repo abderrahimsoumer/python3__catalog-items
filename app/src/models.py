@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.pool import StaticPool
 from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random, string
@@ -22,12 +23,21 @@ class User(Base):
     name = Column(String(60))
     username = Column(String(32), index=True)
     password_hash = Column(String)
+    #source = Column(String(60)) # Exemple: google, facebook ...
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'name'         : self.name,
+           'username'     : self.username,
+           'password_hash': self.password_hash,
+       }
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 
     def verify_password(self, password):
-        pwd_context.verify(password, self.password_hash)
+        return pwd_context.verify(password, self.password_hash)
 
     # generate auth tokens valid 
     def generate_auth_token(self, expiration=600):
@@ -51,7 +61,6 @@ class User(Base):
 
 
 
-
 class Category(Base):
     __tablename__ = "category"
     id = Column(Integer, primary_key=True)
@@ -69,7 +78,10 @@ class Item(Base):
     user = relationship(User)
 
 
-engine = create_engine('sqlite:///catalogItems.db')
-
+engine = create_engine(
+    'sqlite:///catalogItems.db',
+    connect_args={'check_same_thread': False},
+    poolclass=StaticPool, echo=True
+    )
 
 Base.metadata.create_all(engine)

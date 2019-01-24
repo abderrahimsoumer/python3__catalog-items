@@ -1,39 +1,56 @@
-from models import Base, User, Category, Item
-from flask import render_template, Flask, jsonify, request, url_for, abort,redirect, g
+from models import Base, User, Category, Item, secret_key
+from flask import render_template, Flask, flash, request, url_for, abort,redirect, jsonify
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.pool import StaticPool
 from sqlalchemy import create_engine
 
-from flask_httpauth import HTTPBasicAuth
-auth = HTTPBasicAuth()
+#from flask_httpauth import HTTPBasicAuth
+#auth = HTTPBasicAuth()
+from flask import session as login_session
+from pickle import dump
+import json
 
 
-engine = create_engine('sqlite:///catalogItems.db')
+engine = create_engine(
+    'sqlite:///catalogItems.db',
+    connect_args={'check_same_thread': False},
+    poolclass=StaticPool, echo=True
+    )
 
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 app = Flask(__name__)
 
-
-#ADD @auth.verify_password decorator here
-@auth.verify_password
-def verify_password(username_or_token,password):
-    #Try to see if it's a token first
-    user_id = User.verify_auth_token(username_or_token)
-    if user_id:
-        user = session.query(User).filter_by(id= user_id).one()
-    else:
-        user = session.query(User).filter_by(username= username_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user
-    return True
-
     
-@app.route('/login/')
+@app.route('/login/', methods=['POST','GET'])
 def login():
-	return render_template('login.html')
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = session.query(User).filter_by(username= username).first()
+        if not user or not user.verify_password(password):
+            message = "Username and/or password incorrect"
+            print(message)
+            flash(message)
+            return redirect(url_for('login'))
+        login_session['id'] = user.id
+        login_session['name'] = user.name
+        login_session['username'] = user.username
+        return redirect(url_for('index'))       
+    if request.method == "GET":
+        if "username" in login_session:
+            return redirect(url_for('index'))
+        return render_template('login.html')
+
+
+@app.route('/')
+def index():
+    if "username" in login_session:
+        return "username is %s" % login_session['username']
+    users = session.query(User).all()
+    return jsonify(User=[i.serialize for i in users])
 
 @app.route('/users/',methods=['POST'])
 def newUser():
@@ -53,19 +70,13 @@ def newUser():
 
     else:
         message ="Usernam already taken"
+        flash(message)
         print("Usernam already taken")
         return redirect(url_for('login'))
 
 
-
-@app.route('/')
-@auth.login_required
-def index():
-	print("Index page")
-	return "Index page"
-
-
 if __name__ == '__main__':
+    app.secret_key = secret_key
     app.debug = True
-    #app.config['SECRET_KEY'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    app.config['SECRET_KEY'] = secret_key
     app.run(host='0.0.0.0', port=5000)
