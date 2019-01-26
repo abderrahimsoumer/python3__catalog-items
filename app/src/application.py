@@ -36,7 +36,7 @@ def login():
             print(message)
             flash(message)
             return redirect(url_for('login'))
-        login_session['id'] = user.id
+        login_session['user_id'] = user.id
         login_session['name'] = user.name
         login_session['username'] = user.username
         return redirect(url_for('index'))
@@ -49,7 +49,16 @@ def login():
 @app.route('/')
 def index():
     categories = session.query(Category).all()
-    # return jsonify(Category=[i.serialize for i in categories])
+    """
+    Instead of using this code to get the information for the user actif
+    I just store the information I need in the session
+
+    user_actif = None
+    if "username" in login_session:
+        user_actif = session.query(User).filter_by(
+                     username= login_session.get('username')
+                    ).first()
+    """
     return render_template('index.html', categories=categories)
 
 

@@ -11,7 +11,14 @@
 		<div class="leftContent">
 			<h1>Catalog App</h1>
 		</div>
-		<div class="rightContent"><a class="btn" href="">login</a></div>
+		<div class="rightContent">
+			{% if 'username' in session %}
+			  <span>{{ session.get('name') }}</span>
+			  <a class="btn" href="{{ url_for('login') }}">logout</a>
+			{% else %}
+			  <a class="btn" href="{{ url_for('login') }}">login</a>
+			{% endif %}
+		</div>
 	</div>
 </header>
 
