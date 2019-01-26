@@ -19,13 +19,13 @@
 	<div class="flex">
 		<div class="sidear">
 			<h2>Categories</h2>
+			{% if categories %}
 			<ul>
-				<li><a href="#">Emploi</a></li>
-				<li><a href="#">Sports</a></li>
-				<li><a href="#">Nation</a></li>
-				<li><a href="#">Monde</a></li>
-				<li><a href="#">Beauty</a></li>
+				{% for categorie in categories %}
+				<li><a href="#">{{categorie.name }}</a></li>
+				{% endfor %}
 			</ul>
+			{% endif %}
 		</div>
 		<div class="content">
 			<h2>Categores</h2>

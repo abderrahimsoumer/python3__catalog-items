@@ -23,14 +23,13 @@ class User(Base):
     name = Column(String(60))
     username = Column(String(32), index=True)
     password_hash = Column(String)
-    #source = Column(String(60)) # Exemple: google, facebook ...
+    # source = Column(String(60)) # Exemple: google, facebook ...
     @property
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
            'name'         : self.name,
            'username'     : self.username,
-           'password_hash': self.password_hash,
        }
 
     def hash_password(self, password):
@@ -65,7 +64,12 @@ class Category(Base):
     __tablename__ = "category"
     id = Column(Integer, primary_key=True)
     name = Column(String(60), nullable=False)
-
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'name'         : self.name
+       }
 
 class Item(Base):
     __tablename__ = "c_item" # this table contains the items for a specific category
