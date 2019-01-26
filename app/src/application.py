@@ -46,6 +46,14 @@ def login():
         return render_template('login.html')
 
 
+@app.route('/logout/')
+def logout():
+    login_session.pop('user_id',None)
+    login_session.pop('username',None)
+    login_session.pop('name',None)
+    return redirect(url_for('index'))
+
+
 @app.route('/')
 def index():
     categories = session.query(Category).all()
