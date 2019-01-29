@@ -57,6 +57,7 @@ def logout():
 @app.route('/')
 def index():
     categories = session.query(Category).all()
+    latest_items = session.query(Item).limit(20).all()
     """
     Instead of using this code to get the information for the user actif
     I just store the information I need in the session
@@ -67,7 +68,7 @@ def index():
                      username= login_session.get('username')
                     ).first()
     """
-    return render_template('index.html', categories=categories)
+    return render_template('index.html', categories=categories, items= latest_items)
 
 
 @app.route('/users/', methods=['POST'])
@@ -113,6 +114,8 @@ def newItem():
         session.add(item)
         try:
             session.commit()
+            message = "added successfully"
+            flash(message)
         except SQLAlchemyError as e:
             print(str(e))
             message = str(e)

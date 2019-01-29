@@ -35,34 +35,15 @@
 			{% endif %}
 		</div>
 		<div class="content">
-			<h2>Categores</h2>
+			<h2>Latest item</h2>
+			<a href="{{url_for('newItem')}}" class="add_item">New item</a>
 			<div class="items">
-				<div class="item">Project Description Project Description </div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
-				<div class="item">Project Description</div>
+				{% if items %}
+				{% for item in items %}
+				<div class="item"><a href="#">{{item.title}}</a> <span class="c_name">({{item.category.name}})</span></div>
+				{% endfor %}
+				{% endif %}
+				
 			</div>
 		</div>
 		<div class="clearfix"></div>
