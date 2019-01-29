@@ -8,15 +8,12 @@
 
 	<div class="card card--centered">
 		<div class="login">
-<!--MESSAGE FLASHING EXAMPLE -->
+<!--MESSAGE FLASHING  -->
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-
-<ul>
-{% for message in messages %}
-  <li><strong>{{message}}</strong></li>
-  {% endfor %}
-</ul>
+	{% for message in messages %}
+	  <div class="alert alert-danger">{{message}}</div>
+	{% endfor %}
 {% endif %}
 {% endwith %}
 			<h1 class="login__title">Join us</h1>

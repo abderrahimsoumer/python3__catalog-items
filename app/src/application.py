@@ -89,8 +89,39 @@ def newUser():
     else:
         message = "Usernam already taken"
         flash(message)
-        print("Usernam already taken")
+        print(message)
         return redirect(url_for('login'))
+
+
+@app.route('/new-item/', methods=['GET','POST'])
+def newItem():
+    if "username" not in login_session:
+            return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        category_id = request.form.get('category')
+        user_id = login_session.get('user_id')
+        if not title or not description or not category_id:
+            message = "missing parameter"
+            flash(message)
+            return redirect(url_for('newItem'))
+        item = Item(title=title, description=description,
+                    cat_id= category_id, user_id=user_id
+                    )
+        session.add(item)
+        try:
+            session.commit()
+        except SQLAlchemyError as e:
+            print(str(e))
+            message = str(e)
+            flash(message)
+        return redirect(url_for('newItem'))
+
+    if request.method == 'GET':
+        categories = session.query(Category).all()
+        return render_template('ajoute.html',categories=categories)
 
 
 if __name__ == '__main__':
