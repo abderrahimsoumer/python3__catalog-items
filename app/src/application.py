@@ -4,7 +4,7 @@ from flask import abort, redirect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.pool import StaticPool
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 
 # from flask_httpauth import HTTPBasicAuth
 # auth = HTTPBasicAuth()
@@ -96,6 +96,7 @@ def newUser():
 
 @app.route('/new-item/', methods=['GET','POST'])
 def newItem():
+    # The user can only add an item if he logged in
     if "username" not in login_session:
             return redirect(url_for('login'))
 
@@ -104,8 +105,9 @@ def newItem():
         description = request.form.get('description')
         category_id = request.form.get('category')
         user_id = login_session.get('user_id')
+        # title, description and category_id must not be empty
         if not title or not description or not category_id:
-            message = "missing parameter"
+            message = "Please, Enter all the fields"
             flash(message)
             return redirect(url_for('newItem'))
         item = Item(title=title, description=description,
@@ -116,15 +118,34 @@ def newItem():
             session.commit()
             message = "added successfully"
             flash(message)
-        except SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:
             print(str(e))
-            message = str(e)
+            message = "Unable to save changes"
             flash(message)
         return redirect(url_for('newItem'))
 
     if request.method == 'GET':
         categories = session.query(Category).all()
         return render_template('ajoute.html',categories=categories)
+
+
+@app.route('/item/<int:id>')
+def itemView(id):
+    try:
+        item = session.query(Item).filter_by(id=id).first()
+    except exc.SQLAlchemyError as e:
+        abort(404)
+    
+    return render_template('detail.html',item=item)
+
+@app.route('/item/edit/<int:id>')
+def itemUpdate(id):
+    return "Update"
+
+
+@app.route('/item/delete/<int:id>')
+def itemDelete(id):
+    return "Delete"
 
 
 if __name__ == '__main__':
