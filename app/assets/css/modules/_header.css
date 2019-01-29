@@ -1,6 +1,6 @@
 header{
 	margin: 0;
-	background: #222;
+	background: rgb(2, 90, 82);
 }
 .header{
 	max-width: 700px;
@@ -8,6 +8,9 @@ header{
 
 	h1{
 		margin: 0;
+		color: $colorSecond;
+	}
+	span{
 		color: $colorSecond;
 	}
 }

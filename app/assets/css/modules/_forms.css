@@ -7,7 +7,7 @@
 	    font-size: 12px;
 	    font-weight: 400;
 	}
-	input{
+	input,select,textarea{
 		float: right;
 		height: 1.6em;
 		width: 60%;
@@ -17,8 +17,14 @@
 	    border-bottom: 3px solid #55b6a7;
 	    font-size: 1em;
 	    padding-left: 1em;
-	    color: #333;
+	    color: #000;
 	    font-weight: 400;
+	}
+	textarea  {
+		min-height:100px ;
+	}
+	select  {
+		width: 65%;;
 	}
 }
 

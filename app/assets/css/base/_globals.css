@@ -18,3 +18,30 @@ body{
 .float-left{
 	float: left;
 }
+
+.title_top{
+	color: #d4faf9;
+    background: $colorSecond;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0;
+    /* padding: 0; */
+    border-radius: 0 0 10px 10px;
+}
+.title_detail {
+    font-size: 20px;
+}
+
+.description{
+    text-indent: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: #000;
+    line-height: 30px;
+}
+p:first-letter {
+    font-size: 28px;
+    font-weight: bold;
+}

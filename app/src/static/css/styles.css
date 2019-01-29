@@ -26,9 +26,42 @@ body{
 }
 
 
+.title_top{
+	color: #d4faf9;
+    background: #009688;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0;
+    /* padding: 0; */
+    border-radius: 0 0 10px 10px;
+}
+
+
+.title_detail {
+    font-size: 20px;
+}
+
+
+.description{
+    text-indent: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: #000;
+    line-height: 30px;
+}
+
+
+p:first-letter {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+
 header{
 	margin: 0;
-	background: #222;
+	background: rgb(2, 90, 82);
 }
 
 
@@ -40,6 +73,11 @@ header{
 
 .header h1{
 	margin: 0;
+	color: #009688;
+}
+
+
+.header span{
 	color: #009688;
 }
 
@@ -71,6 +109,35 @@ header{
     text-transform: uppercase;
     font-weight: 400;
     cursor: pointer;
+}
+
+
+.alert{
+	padding: 20px 10px;
+	background: #eee;
+	margin: 5px 0;
+	border-radius: 5px;
+}
+
+
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+
+.alert-success {
+    color: #155724;
+    background-color: #94f57c;
+    border-color: #94f57c;
+}
+
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
 }
 
 
