@@ -183,9 +183,36 @@ def itemUpdate(id):
         return render_template('update.html',categories=categories, item=item)
 
 
-@app.route('/item/delete/<int:id>')
+@app.route('/item/delete/<int:id>', methods=['GET','POST'])
 def itemDelete(id):
-    return "Delete"
+    try:
+        item = session.query(Item).filter_by(id=id).first()
+    except exc.SQLAlchemyError as e:
+        # if the item doesn't exist return Not found
+        abort(404)
+
+    if "username" not in login_session:
+            return redirect(url_for('login'))
+
+    if not item.user or item.user.id != int(login_session.get('user_id')):
+        # if the current user doesn't match the user who create the item return Unauthorized
+        abort(401)
+
+    if request.method == "POST":
+        session.delete(item)
+        try:
+            session.commit()
+            message = "Deleted successfully"
+            flash(message)
+        except exc.SQLAlchemyError as e:
+            print(str(e))
+            message = "Unable to delete item"
+            flash(message)
+            return redirect(url_for('itemDelete',id=item.id))
+        return redirect(url_for('index'))
+
+    if request.method == "GET":
+        return render_template('delete.html',item=item)
 
 
 if __name__ == '__main__':
