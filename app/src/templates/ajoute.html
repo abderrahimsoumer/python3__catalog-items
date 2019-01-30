@@ -2,8 +2,8 @@
 <html>
 <head>
 	<title>Home page </title>
-	<link rel="stylesheet" href="../static/css/login.css">
-	<link rel="stylesheet" href="../static/css/styles.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+	<link rel="stylesheet" href=".{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -67,7 +67,7 @@
 </main>
 
 
-<script type="text/javascript" src="../static/js/app.js""></script>
+<script type="text/javascript" src="{{ url_for('static', filename='/js/app.js') }}"></script>
 
 </body>
 </html>

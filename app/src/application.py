@@ -104,7 +104,7 @@ def newItem():
         title = request.form.get('title')
         description = request.form.get('description')
         category_id = request.form.get('category')
-        user_id = login_session.get('user_id')
+        user_id = int(login_session.get('user_id'))
         # title, description and category_id must not be empty
         if not title or not description or not category_id:
             message = "Please, Enter all the fields"
@@ -138,9 +138,49 @@ def itemView(id):
     
     return render_template('detail.html',item=item)
 
-@app.route('/item/edit/<int:id>')
+@app.route('/item/edit/<int:id>', methods=['GET','POST'])
 def itemUpdate(id):
-    return "Update"
+    try:
+        item = session.query(Item).filter_by(id=id).first()
+    except exc.SQLAlchemyError as e:
+        # if the item doesn't exist return Not found
+        abort(404)
+
+    if "username" not in login_session:
+            return redirect(url_for('login'))
+
+    if not item.user or item.user.id != int(login_session.get('user_id')):
+        # if the current user doesn't match the user who create the item return Unauthorized
+        abort(401)
+
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        category_id = request.form.get('category')
+        # title, description and category_id must not be empty
+        if not title or not description or not category_id:
+            message = "Please, Enter all the fields"
+            flash(message)
+            return redirect(url_for('itemUpdate',id=item.id))
+
+        item.title = title
+        item.description = description
+        item.cat_id = category_id
+        session.add(item)
+
+        try:
+            session.commit()
+            message = "Updated successfully"
+            flash(message)
+        except exc.SQLAlchemyError as e:
+            print(str(e))
+            message = "Unable to save changes"
+            flash(message)
+        return redirect(url_for('itemUpdate',id=item.id))
+
+    if request.method == 'GET':
+        categories = session.query(Category).all()
+        return render_template('update.html',categories=categories, item=item)
 
 
 @app.route('/item/delete/<int:id>')
