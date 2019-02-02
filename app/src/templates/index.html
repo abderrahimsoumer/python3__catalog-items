@@ -1,61 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Home page </title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
+{% extends "layouts/main.html" %}
 
-<header>
-	<div class="header flex flex--sb">
-		<div class="leftContent">
-			<a href="/" class="link-home"><h1>Catalog App</h1></a>
-		</div>
-		<div class="rightContent">
-			{% if 'username' in session %}
-			  <span>{{ session.get('name') }}</span>
-			  <a class="btn" href="{{ url_for('logout') }}">logout</a>
-			{% else %}
-			  <a class="btn" href="{{ url_for('login') }}">login</a>
-			{% endif %}
-		</div>
-	</div>
-</header>
+{% block title %} {%if current_categorie %} {{current_categorie.name}} {% else %} Index {% endif %} {% endblock %}
 
-<main>
-	<div class="flex">
-		<div class="sidear">
-			<h2>Categories</h2>
-			{% if categories %}
-			<ul>
-				{% for categorie in categories %}
-				<li><a href="{{url_for('itemsByCategory', cat_id=categorie.id)}}">{{categorie.name }}</a></li>
-				{% endfor %}
-			</ul>
-			{% endif %}
-		</div>
-		<div class="content">
-			{%if current_categorie %}
-			<h2>{{current_categorie.name}}</h2>
-			{% else %}
-			<h2>Latest item</h2>
-			{% endif %}
-			<a href="{{url_for('newItem')}}" class="add_item">New item</a>
-			<div class="items">
-				{% if items %}
-				{% for item in items %}
+
+{% block content %}
+    {%if current_categorie %}
+		<h2>{{current_categorie.name}}</h2>
+	{% else %}
+		<h2>Latest item</h2>
+	{% endif %}
+		<a href="{{url_for('newItem')}}" class="add_item">New item</a>
+		<div class="items">
+			{% if items %}
+			{% for item in items %}
 				<div class="item"><a href="{{url_for('itemView',id = item.id)}}">{{item.title}}</a> <span class="c_name">({{item.category.name}})</span></div>
-				{% endfor %}
-				{% endif %}
-				
-			</div>
+			{% endfor %}
+			{% endif %}
 		</div>
-		<div class="clearfix"></div>
-	</div>
-</main>
-
-
-<script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
-
-</body>
-</html>
+{% endblock %}
