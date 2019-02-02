@@ -204,6 +204,23 @@ main{
 	padding: 10px;
 }
 
+.btn-delete {
+    background: #f006 !important;
+    width: 100px !important;
+}
+.btn.btn-cancel {
+    float: right;
+    background: #77bd53;
+    color: #000;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    margin-left: 15px !important;
+    margin: 0;
+}
+.link-home{
+	text-decoration: none;
+}
 
 /*
 @import "modules/_cards";

@@ -2,14 +2,14 @@
 <html>
 <head>
 	<title>Home page </title>
-	<link rel="stylesheet" href=".{{ url_for('static', filename='css/styles.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
 <header>
 	<div class="header flex flex--sb">
 		<div class="leftContent">
-			<h1>Catalog App</h1>
+			<a href="/" class="link-home"><h1>Catalog App</h1></a>
 		</div>
 		<div class="rightContent">
 			{% if 'username' in session %}
@@ -29,13 +29,17 @@
 			{% if categories %}
 			<ul>
 				{% for categorie in categories %}
-				<li><a href="#">{{categorie.name }}</a></li>
+				<li><a href="{{url_for('itemsByCategory', cat_id=categorie.id)}}">{{categorie.name }}</a></li>
 				{% endfor %}
 			</ul>
 			{% endif %}
 		</div>
 		<div class="content">
+			{%if current_categorie %}
+			<h2>{{current_categorie.name}}</h2>
+			{% else %}
 			<h2>Latest item</h2>
+			{% endif %}
 			<a href="{{url_for('newItem')}}" class="add_item">New item</a>
 			<div class="items">
 				{% if items %}

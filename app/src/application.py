@@ -70,6 +70,12 @@ def index():
     """
     return render_template('index.html', categories=categories, items= latest_items)
 
+@app.route('/category/<int:cat_id>/')
+def itemsByCategory(cat_id):
+    categories = session.query(Category).all()
+    current_categorie = session.query(Category).filter_by(id=cat_id).first()
+    latest_items = session.query(Item).filter_by(cat_id=cat_id).limit(20).all()
+    return render_template('index.html', categories=categories, current_categorie=current_categorie, items= latest_items)
 
 @app.route('/users/', methods=['POST'])
 def newUser():
@@ -137,6 +143,7 @@ def itemView(id):
         abort(404)
     
     return render_template('detail.html',item=item)
+
 
 @app.route('/item/edit/<int:id>', methods=['GET','POST'])
 def itemUpdate(id):
