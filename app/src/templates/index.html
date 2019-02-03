@@ -15,6 +15,8 @@
 			{% for item in items %}
 				<div class="item"><a href="{{url_for('itemView',id = item.id)}}">{{item.title}}</a> <span class="c_name">({{item.category.name}})</span></div>
 			{% endfor %}
+			{% else %}
+			<p>No item has been added yeat !</p>
 			{% endif %}
 		</div>
 {% endblock %}

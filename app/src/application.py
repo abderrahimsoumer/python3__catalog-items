@@ -57,7 +57,7 @@ def logout():
 @app.route('/')
 def index():
     categories = session.query(Category).all()
-    latest_items = session.query(Item).limit(20).all()
+    latest_items = session.query(Item).order_by("id desc").limit(20).all()
     """
     Instead of using this code to get the information for the user actif
     I just store the information I need in the session
@@ -74,7 +74,7 @@ def index():
 def itemsByCategory(cat_id):
     categories = session.query(Category).all()
     current_categorie = session.query(Category).filter_by(id=cat_id).first()
-    latest_items = session.query(Item).filter_by(cat_id=cat_id).limit(20).all()
+    latest_items = session.query(Item).filter_by(cat_id=cat_id).order_by("id desc").limit(20).all()
     return render_template('index.html', categories=categories, current_categorie=current_categorie, items= latest_items)
 
 @app.route('/users/', methods=['POST'])
