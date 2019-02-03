@@ -11,7 +11,11 @@ from sqlalchemy import create_engine, exc
 from flask import session as login_session
 from pickle import dump
 import json
+import random
+import string
 
+
+from login_with_providers import login_with_google
 
 engine = create_engine(
     'sqlite:///catalogItems.db',
@@ -26,24 +30,32 @@ app = Flask(__name__)
 
 
 @app.route('/login/', methods=['POST', 'GET'])
-def login():
+@app.route('/login/<string:provider>/', methods=['POST', 'GET'])
+def login(provider=None):
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        user = session.query(User).filter_by(username=username).first()
-        if not user or not user.verify_password(password):
-            message = "Username and/or password incorrect"
-            print(message)
-            flash(message)
-            return redirect(url_for('login'))
-        login_session['user_id'] = user.id
-        login_session['name'] = user.name
-        login_session['username'] = user.username
-        return redirect(url_for('index'))
+        if provider is None:
+            username = request.form.get('username')
+            password = request.form.get('password')
+            user = session.query(User).filter_by(username=username).first()
+            if not user or not user.verify_password(password):
+                message = "Username and/or password incorrect"
+                print(message)
+                flash(message)
+                return redirect(url_for('login'))
+            login_session['user_id'] = user.id
+            login_session['name'] = user.name
+            login_session['username'] = user.username
+            return redirect(url_for('index'))
+        if provider == 'google':
+            return login_with_google()
     if request.method == "GET":
         if "username" in login_session:
             return redirect(url_for('index'))
-        return render_template('login.html')
+
+        state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+            for x in range(32))
+        login_session['state'] = state
+        return render_template('login.html', STATE=state)
 
 
 @app.route('/logout/')

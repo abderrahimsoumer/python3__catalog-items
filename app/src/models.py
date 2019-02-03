@@ -22,6 +22,10 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
     username = Column(String(32), index=True)
+    email =  Column(String(255), index=True)
+    picture =  Column(String(255))
+    provider =  Column(String(32))
+    provider_id =  Column(String(32))
     password_hash = Column(String)
     # source = Column(String(60)) # Exemple: google, facebook ...
     @property
