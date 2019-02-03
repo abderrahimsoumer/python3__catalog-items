@@ -16,7 +16,7 @@ import string
 
 
 from login_with_providers import login_with_google, logout_from_google
-from login_with_providers import login_with_facebook
+from login_with_providers import login_with_facebook, logout_from_facebook
 
 
 engine = create_engine(
@@ -68,6 +68,9 @@ def logout():
         if login_session['provider'] == 'google':
             logout_from_google()
             del login_session['gplus_id']
+            del login_session['access_token']
+        if login_session['provider'] == 'facebook':
+            logout_from_facebook()
             del login_session['access_token']
             
     login_session.pop('user_id',None)
