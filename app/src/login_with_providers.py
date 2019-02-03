@@ -31,6 +31,11 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog Item Application"
 
 
+"""
+Google Provider 
+
+"""
+
 def login_with_google():
 	# Validate state token
     if request.args.get('state') != login_session['state']:
@@ -138,6 +143,64 @@ def logout_from_google():
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
     return response
+
+
+"""
+Facebook Provider 
+
+"""
+
+def login_with_facebook():
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state parameter.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    access_token = request.data
+    print("access token received {%s} " % str(access_token))
+
+
+    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+    app_secret = json.loads(
+        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+        app_id, app_secret, access_token.decode("utf-8") )
+    h = httplib2.Http()
+    result = json.loads(h.request(url, 'GET')[1])
+
+    #token = result.split(',')[0].split(':')[1].replace('"', '')
+    token = result['access_token']
+    # Use token to get user info from API
+    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email,picture{url}' % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+
+    data = json.loads(result)
+    for key, value in data.items():
+        print(key, value)
+    login_session['username'] = "facebbok_"+data['id']
+    login_session['name'] = data["name"]
+    login_session['email'] = data["email"]
+    login_session['provider'] = 'facebook'
+    login_session['provider_id'] = data["id"]
+    login_session['picture'] = data['picture']["data"]["url"]
+    
+    # The token must be stored in the login_session in order to properly logout
+    login_session['access_token'] = token
+
+    # see if user exists
+    login_session['user_id'] = getUserID(login_session['provider_id'],login_session['provider'])
+
+    if login_session['user_id'] is None :
+        login_session['user_id'] = createUser(login_session)
+
+    response = make_response(json.dumps('OK'),
+                                 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+
+
 
 def getUserID(provider_id,provider):
     try:

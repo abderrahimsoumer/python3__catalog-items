@@ -16,6 +16,8 @@ import string
 
 
 from login_with_providers import login_with_google, logout_from_google
+from login_with_providers import login_with_facebook
+
 
 engine = create_engine(
     'sqlite:///catalogItems.db',
@@ -48,6 +50,8 @@ def login(provider=None):
             return redirect(url_for('index'))
         if provider == 'google':
             return login_with_google()
+        if provider == 'facebook':
+            return login_with_facebook()
     if request.method == "GET":
         if "username" in login_session:
             return redirect(url_for('index'))
