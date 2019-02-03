@@ -15,7 +15,7 @@ import random
 import string
 
 
-from login_with_providers import login_with_google
+from login_with_providers import login_with_google, logout_from_google
 
 engine = create_engine(
     'sqlite:///catalogItems.db',
@@ -60,9 +60,20 @@ def login(provider=None):
 
 @app.route('/logout/')
 def logout():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            logout_from_google()
+            del login_session['gplus_id']
+            del login_session['access_token']
+            
     login_session.pop('user_id',None)
     login_session.pop('username',None)
     login_session.pop('name',None)
+    login_session.pop('email',None)
+    login_session.pop('picture',None)
+    login_session.pop('provider',None)
+    login_session.pop('provider_id',None)
+
     return redirect(url_for('index'))
 
 
