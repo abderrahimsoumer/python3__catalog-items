@@ -57,7 +57,7 @@ def login(provider=None):
             return redirect(url_for('index'))
 
         state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-            for x in range(32))
+                        for x in range(32))
         login_session['state'] = state
         return render_template('login.html', STATE=state)
 
@@ -72,14 +72,14 @@ def logout():
         if login_session['provider'] == 'facebook':
             logout_from_facebook()
             del login_session['access_token']
-            
-    login_session.pop('user_id',None)
-    login_session.pop('username',None)
-    login_session.pop('name',None)
-    login_session.pop('email',None)
-    login_session.pop('picture',None)
-    login_session.pop('provider',None)
-    login_session.pop('provider_id',None)
+
+    login_session.pop('user_id', None)
+    login_session.pop('username', None)
+    login_session.pop('name', None)
+    login_session.pop('email', None)
+    login_session.pop('picture', None)
+    login_session.pop('provider', None)
+    login_session.pop('provider_id', None)
 
     return redirect(url_for('index'))
 
@@ -92,10 +92,13 @@ def catalogJSON():
                             for i in c.items])
                             for c in categories])
 
+
 @app.route('/')
 def index():
     categories = session.query(Category).all()
-    latest_items = session.query(Item).order_by("id desc").limit(20).all()
+    # I should implement the pagination later
+    # for the instance i display all the items in one page
+    latest_items = session.query(Item).order_by("id desc").all()
     """
     Instead of using this code to get the information for the user actif
     I just store the information I need in the session
@@ -106,14 +109,23 @@ def index():
                      username= login_session.get('username')
                     ).first()
     """
-    return render_template('index.html', categories=categories, items= latest_items)
+    return render_template('index.html',
+                           categories=categories,
+                           items=latest_items)
+
 
 @app.route('/category/<int:cat_id>/')
 def itemsByCategory(cat_id):
     categories = session.query(Category).all()
     current_categorie = session.query(Category).filter_by(id=cat_id).first()
-    latest_items = session.query(Item).filter_by(cat_id=cat_id).order_by("id desc").limit(20).all()
-    return render_template('index.html', categories=categories, current_categorie=current_categorie, items= latest_items)
+    # I should implement the pagination later
+    # for the instance i display all the items in one page
+    latest_items = session.query(Item).filter_by(
+                   cat_id=cat_id).order_by("id desc").all()
+    return render_template('index.html', categories=categories,
+                           current_categorie=current_categorie,
+                           items=latest_items)
+
 
 @app.route('/users/', methods=['POST'])
 def newUser():
@@ -138,7 +150,7 @@ def newUser():
         return redirect(url_for('login'))
 
 
-@app.route('/new-item/', methods=['GET','POST'])
+@app.route('/new-item/', methods=['GET', 'POST'])
 def newItem():
     # The user can only add an item if he logged in
     if "username" not in login_session:
@@ -155,7 +167,7 @@ def newItem():
             flash(message)
             return redirect(url_for('newItem'))
         item = Item(title=title, description=description,
-                    cat_id= category_id, user_id=user_id
+                    cat_id=category_id, user_id=user_id
                     )
         session.add(item)
         try:
@@ -170,7 +182,7 @@ def newItem():
 
     if request.method == 'GET':
         categories = session.query(Category).all()
-        return render_template('ajoute.html',categories=categories)
+        return render_template('ajoute.html', categories=categories)
 
 
 @app.route('/item/<int:id>')
@@ -179,11 +191,11 @@ def itemView(id):
         item = session.query(Item).filter_by(id=id).first()
     except exc.SQLAlchemyError as e:
         abort(404)
-    
-    return render_template('detail.html',item=item)
+
+    return render_template('detail.html', item=item)
 
 
-@app.route('/item/edit/<int:id>', methods=['GET','POST'])
+@app.route('/item/edit/<int:id>', methods=['GET', 'POST'])
 def itemUpdate(id):
     try:
         item = session.query(Item).filter_by(id=id).first()
@@ -195,7 +207,8 @@ def itemUpdate(id):
             return redirect(url_for('login'))
 
     if not item.user or item.user.id != int(login_session.get('user_id')):
-        # if the current user doesn't match the user who create the item return Unauthorized
+        # if the current user doesn't match the user who create
+        # the item return Unauthorized
         abort(401)
 
     if request.method == 'POST':
@@ -206,7 +219,7 @@ def itemUpdate(id):
         if not title or not description or not category_id:
             message = "Please, Enter all the fields"
             flash(message)
-            return redirect(url_for('itemUpdate',id=item.id))
+            return redirect(url_for('itemUpdate', id=item.id))
 
         item.title = title
         item.description = description
@@ -221,14 +234,14 @@ def itemUpdate(id):
             print(str(e))
             message = "Unable to save changes"
             flash(message)
-        return redirect(url_for('itemUpdate',id=item.id))
+        return redirect(url_for('itemUpdate', id=item.id))
 
     if request.method == 'GET':
         categories = session.query(Category).all()
-        return render_template('update.html',categories=categories, item=item)
+        return render_template('update.html', categories=categories, item=item)
 
 
-@app.route('/item/delete/<int:id>', methods=['GET','POST'])
+@app.route('/item/delete/<int:id>', methods=['GET', 'POST'])
 def itemDelete(id):
     try:
         item = session.query(Item).filter_by(id=id).first()
@@ -240,7 +253,8 @@ def itemDelete(id):
             return redirect(url_for('login'))
 
     if not item.user or item.user.id != int(login_session.get('user_id')):
-        # if the current user doesn't match the user who create the item return Unauthorized
+        # if the current user doesn't match the user who create
+        # the item return Unauthorized
         abort(401)
 
     if request.method == "POST":
@@ -253,11 +267,11 @@ def itemDelete(id):
             print(str(e))
             message = "Unable to delete item"
             flash(message)
-            return redirect(url_for('itemDelete',id=item.id))
+            return redirect(url_for('itemDelete', id=item.id))
         return redirect(url_for('index'))
 
     if request.method == "GET":
-        return render_template('delete.html',item=item)
+        return render_template('delete.html', item=item)
 
 
 if __name__ == '__main__':

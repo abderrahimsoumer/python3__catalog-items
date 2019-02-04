@@ -1,4 +1,4 @@
-from flask import render_template, Flask, flash, request, url_for, jsonify
+from flask import request, url_for, jsonify
 
 from models import Base, User
 
@@ -32,12 +32,13 @@ APPLICATION_NAME = "Catalog Item Application"
 
 
 """
-Google Provider 
+Google Provider
 
 """
 
+
 def login_with_google():
-	# Validate state token
+    # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -87,8 +88,10 @@ def login_with_google():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+                    json.dumps('Current user is already connected.'),
+                    200
+                    )
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -109,17 +112,18 @@ def login_with_google():
     login_session['picture'] = data['picture']
     login_session['provider'] = "google"
     login_session['provider_id'] = data['id']
-    
+
     # for key, value in data.items():
     #     print(key, value)
-    
-    login_session['user_id'] = getUserID(login_session['provider_id'],login_session['provider'])
 
-    if login_session['user_id'] is None :
+    login_session['user_id'] = getUserID(login_session['provider_id'],
+                                         login_session['provider'])
+
+    if login_session['user_id'] is None:
         login_session['user_id'] = createUser(login_session)
 
     response = make_response(json.dumps('OK'),
-                                 200)
+                             200)
     response.headers['Content-Type'] = 'application/json'
     return response
 
@@ -140,15 +144,18 @@ def logout_from_google():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.', 400)
+            )
         response.headers['Content-Type'] = 'application/json'
     return response
 
 
 """
-Facebook Provider 
+Facebook Provider
 
 """
+
 
 def login_with_facebook():
     if request.args.get('state') != login_session['state']:
@@ -158,17 +165,16 @@ def login_with_facebook():
     access_token = request.data
     print("access token received {%s} " % str(access_token))
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
-        app_id, app_secret, access_token.decode("utf-8") )
+        app_id, app_secret, access_token.decode("utf-8"))
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
 
-    #token = result.split(',')[0].split(':')[1].replace('"', '')
+    # token = result.split(',')[0].split(':')[1].replace('"', '')
     token = result['access_token']
     # Use token to get user info from API
     url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email,picture{url}' % token
@@ -184,18 +190,19 @@ def login_with_facebook():
     login_session['provider'] = 'facebook'
     login_session['provider_id'] = data["id"]
     login_session['picture'] = data['picture']["data"]["url"]
-    
+
     # The token must be stored in the login_session in order to properly logout
     login_session['access_token'] = token
 
     # see if user exists
-    login_session['user_id'] = getUserID(login_session['provider_id'],login_session['provider'])
+    login_session['user_id'] = getUserID(login_session['provider_id'],
+                                         login_session['provider'])
 
-    if login_session['user_id'] is None :
+    if login_session['user_id'] is None:
         login_session['user_id'] = createUser(login_session)
 
     response = make_response(json.dumps('OK'),
-                                 200)
+                             200)
     response.headers['Content-Type'] = 'application/json'
     return response
 
@@ -204,7 +211,7 @@ def logout_from_facebook():
     facebook_id = login_session['provider_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     print("you have been logged out")
@@ -212,18 +219,23 @@ def logout_from_facebook():
     response.headers['Content-Type'] = 'application/json'
     return response
 
-def getUserID(provider_id,provider):
+
+def getUserID(provider_id, provider):
     try:
-        user = session.query(User).filter_by(provider_id=provider_id,provider=provider).one()
+        user = session.query(User).filter_by(provider_id=provider_id,
+                                             provider=provider).one()
         return user.id
-    except:
+    except Exception:
         return None
 
 
 def createUser(login_session):
-    newUser = User(username=login_session['username'], name=login_session['name']
-                   , email=login_session['email'], picture=login_session['picture']
-                   , provider_id=login_session['provider_id'], provider=login_session['provider'])
+    newUser = User(username=login_session['username'],
+                   name=login_session['name'],
+                   email=login_session['email'],
+                   picture=login_session['picture'],
+                   provider_id=login_session['provider_id'],
+                   provider=login_session['provider'])
     session.add(newUser)
     session.commit()
-    return getUserID(login_session['provider_id'],login_session['provider'])
+    return getUserID(login_session['provider_id'], login_session['provider'])
