@@ -1,2 +1,4 @@
 /node_modules*
 *__pycache__*
+*_secrets.json
+*catalogItems.db
