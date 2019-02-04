@@ -72,7 +72,8 @@ class Category(Base):
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'name'         : self.name
+           'id'         : self.id,
+           'name'       : self.name
        }
 
 class Item(Base):
@@ -81,9 +82,18 @@ class Item(Base):
     title = Column(String(250), nullable=False)
     description = Column(String)
     cat_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Category)
+    category = relationship(Category, backref='items')
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'id'         : self.id,
+           'title'      : self.title,
+           'description': self.description,
+           'user_id'    : self.user_id
+       }
 
 
 engine = create_engine(

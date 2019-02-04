@@ -84,6 +84,14 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/catalog.json')
+def catalogJSON():
+    categories = session.query(Category).outerjoin(Item).all()
+    # return jsonify(Catalog=[r.serialize for r in categories])
+    return jsonify(Catalog=[dict(c.serialize, items=[i.serialize
+                            for i in c.items])
+                            for c in categories])
+
 @app.route('/')
 def index():
     categories = session.query(Category).all()
