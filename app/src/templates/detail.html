@@ -1,11 +1,6 @@
 {% extends "layouts/base.html" %}
 
 
-{% block head %}
-    {{ super() }}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-{% endblock %}
-
 
 {% block title %} {{item.title}} {% endblock %}
 
@@ -19,8 +14,8 @@
 			</div>
 			{%if session.get('user_id') == item.user.id %}
 			<div class="actions">
-				<a href="{{url_for('itemUpdate', id= item.id)}}">Update</a>
-				<a href="{{url_for('itemDelete', id= item.id)}}">Delete</a>
+				<a class="action action--update" href="{{url_for('itemUpdate', id= item.id)}}">Update</a>
+				<a class="action action--delete" href="{{url_for('itemDelete', id= item.id)}}">Delete</a>
 			</div>
 			{% endif %}
 		</div>

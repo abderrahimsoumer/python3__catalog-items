@@ -9,7 +9,7 @@
 	{% else %}
 		<h2>Latest item</h2>
 	{% endif %}
-		<a href="{{url_for('newItem')}}" class="add_item">New item</a>
+		<a href="{{url_for('newItem')}}" class="btn btn--add_item">New item</a>
 		<div class="items">
 			{% if items %}
 			{% for item in items %}

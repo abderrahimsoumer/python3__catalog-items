@@ -52,4 +52,6 @@ main{
 .content{
 	width: 60%;
 	padding: 10px;
+	position: relative;
+
 }

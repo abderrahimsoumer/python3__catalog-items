@@ -41,3 +41,7 @@ input[type="submit"] {
 	    font-weight: 400;
 	    cursor: pointer;
 	}
+.btn-delete {
+    width: 80px !important;
+    background: #bc021d !important;
+ }

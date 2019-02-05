@@ -20,3 +20,22 @@
 	padding-bottom: 10px;
 
 }
+.login-with-provid {
+
+    background: #025a52;
+    text-align: center;
+    padding: 10px 0;
+
+    &__title {
+	    margin-bottom: 15px;
+		font-size: 12px;
+		text-transform: uppercase;
+		color: #f1f1f1;;
+		margin-top: 10px;
+		border-bottom: 1px solid #01776c;
+	}
+	#signinButton{
+		margin-top: 20px;
+	}
+}
+
