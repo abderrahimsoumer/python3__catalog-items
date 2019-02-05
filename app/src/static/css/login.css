@@ -171,6 +171,12 @@ input[type="submit"] {
 	}
 
 
+.btn-delete {
+    width: 80px !important;
+    background: #bc021d !important;
+ }
+
+
 .login__title
 	{
 	text-transform: uppercase;
@@ -188,4 +194,27 @@ input[type="submit"] {
 	background: rgb(2, 90, 82);
 	padding-bottom: 10px;
 
+}
+
+
+.login-with-provid {
+
+    background: #025a52;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+.login-with-provid__title {
+	margin-bottom: 15px;
+	font-size: 12px;
+	text-transform: uppercase;
+	color: #f1f1f1;
+	margin-top: 10px;
+	border-bottom: 1px solid #01776c;
+}
+
+
+.login-with-provid #signinButton{
+	margin-top: 20px;
 }

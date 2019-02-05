@@ -10,4 +10,47 @@
     text-transform: uppercase;
     font-weight: 400;
     cursor: pointer;
+    
+    &-cancel {
+        float: right;
+        border-radius: 5px;
+        background: #025a52;
+    }
+
+    &--add_item {
+        position: absolute;
+        right: 0;
+        top: 35px;
+        height: 26px;
+        padding: 0px 10px;
+        border-radius: 5px;
+        text-transform: none;
+        background: #025a52;
+        transition: all 0.5s ;
+
+        &:hover{
+            background: #009688;
+        }
+    }
+}
+
+
+.actions {
+    margin-top: 5px;
+
+    .action {
+        text-decoration: none;
+        color: #FFF;
+        padding: 5px;
+        margin-top: 7px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
+    .action--update{
+        background: #025a52;
+    }
+
+    .action--delete{
+        background: #bc021d;
+    }
 }

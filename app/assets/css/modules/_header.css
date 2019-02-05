@@ -13,4 +13,7 @@ header{
 	span{
 		color: $colorSecond;
 	}
+	.link-home{
+		text-decoration: none;
+	}
 }
