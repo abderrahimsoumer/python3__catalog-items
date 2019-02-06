@@ -3,6 +3,7 @@
 	background: #eee;
 	margin: 5px 0;
 	border-radius: 5px;
+    max-width: 400px;
 }
 
 .alert-primary {

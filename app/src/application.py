@@ -36,6 +36,11 @@ app = Flask(__name__)
 def login(provider=None):
     if request.method == 'POST':
         if provider is None:
+            if request.form.get('state') != login_session['state']:
+                message = "Invalid state parameter."
+                flash(message)
+                return redirect(url_for('login'))
+
             username = request.form.get('username')
             password = request.form.get('password')
             user = session.query(User).filter_by(username=username).first()
@@ -129,6 +134,10 @@ def itemsByCategory(cat_id):
 
 @app.route('/users/', methods=['POST'])
 def newUser():
+    if request.form.get('state') != login_session['state']:
+        message = "Invalid state parameter."
+        flash(message)
+        return redirect(url_for('login'))
     name = request.form.get('name')
     username = request.form.get('username')
     password = request.form.get('password')
@@ -140,7 +149,8 @@ def newUser():
         user.hash_password(password)
         session.add(user)
         session.commit()
-        print("save")
+        message = "User added successfully."
+        flash(message)
         return redirect(url_for('index'))
 
     else:

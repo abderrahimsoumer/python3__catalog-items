@@ -30,6 +30,7 @@
 				<div class="tabs-content">
 					<div class="tab-signin" id="tab-signin">
 						<form action="" method="post">
+							<input type="hidden" value="{{STATE}}" name="state">
 							<div class="form-row">
 								<div class="form-control clearfix">
 									<label for="username">Username </label>
@@ -49,6 +50,7 @@
 					</div>
 					<div class="tab-signup" id="tab-signup"  style="display: none;">
 						<form action="{{url_for('newUser')}}" method="POST">
+							<input type="hidden" value="{{STATE}}" name="state">
 							<div class="form-row">
 								<div class="form-control clearfix">
 									<label for="name_signup">Name </label>
