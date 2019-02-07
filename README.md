@@ -20,6 +20,31 @@ follow the instruction below to run the application successfully, If you are fam
 
 Assuming the application is running successfully, you'll see that there's no category, so you need to run "python3 /vagrant/catalog/lotsofCategory.py" to add some categories.
 
+
+## third-party authentication
+
++ ## Google OAuth 2.0
+   You need OAuth 2.0 credentials, including a client ID and client secret, to authenticate users and gain access to Google's APIs.
+
+   After creating an OAuth Client ID download it as a JSON data file, rename the file as "client_secrets.json" and pasted into the folder [./app/src](/app/src).
+
+   > visit [this link](https://developers.google.com/identity/protocols/OpenIDConnect) helps yous create an OAuth Client ID.
+
++ ## facebook OAuth 2.0
+   To enable authentication with Facebook, you need a Facebook App ID, which you can create and retrieve in the [App Dashboard](https://developers.facebook.com/apps/). 
+
+   Navigate into the file [./app/src/fb_client_secrets.json](/app/src/fb_client_secrets.json), 
+   and replace "APP_ID" with your App ID and "APP_SECRECT" with App secret.
+   ```
+   {
+	  "web": {
+	    "app_id": "APP_ID",
+	    "app_secret": "APP_SECRECT"
+	  }
+	}
+   ```
+   > see [this link](https://developers.facebook.com/docs/facebook-login/web) for more information about Facebook Login for the Web.
+
 ## Demonstration
 
 - The homepage displays all current categories with the latest added items.
