@@ -15,8 +15,8 @@ import random
 import string
 
 
-from login_with_providers import login_with_google, logout_from_google
-from login_with_providers import login_with_facebook, logout_from_facebook
+from login_with_providers import CLIENT_ID, login_with_google, logout_from_google
+from login_with_providers import FB_APP_ID, login_with_facebook, logout_from_facebook
 
 
 engine = create_engine(
@@ -64,7 +64,10 @@ def login(provider=None):
         state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                         for x in range(32))
         login_session['state'] = state
-        return render_template('login.html', STATE=state)
+        return render_template('login.html',
+                               STATE=state,
+                               FB_APP_ID=FB_APP_ID,
+                               Google_CLIENT_ID=CLIENT_ID)
 
 
 @app.route('/logout/')

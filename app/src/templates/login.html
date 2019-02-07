@@ -88,7 +88,7 @@
 		          	<div class="g-login-button">
 			          <span class="g-signin"
 			            data-scope="openid email"
-			            data-clientid="37421337102-rbl67rtc16i0o33nb51gvkbv9k922fh7.apps.googleusercontent.com"
+			            data-clientid="{{Google_CLIENT_ID}}"
 			            data-redirecturi="postmessage"
 			            data-accesstype="offline"
 			            data-cookiepolicy="single_host_origin"
@@ -160,7 +160,7 @@ function signInCallback(authResult) {
 <script>
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '384867478956280',
+    appId      : '{{FB_APP_ID}}',
     cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
